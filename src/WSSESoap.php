@@ -2,6 +2,10 @@
 
 namespace XMLSecurity;
 
+use DOMText;
+use DOMXPath;
+use Exception;
+
 /**
  * WSSESoap.php
  *

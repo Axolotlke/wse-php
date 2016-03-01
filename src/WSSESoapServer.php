@@ -2,6 +2,9 @@
 
 namespace XMLSecurity;
 
+use DOMXPath;
+use Exception;
+
 /**
  * WSSESoapServer.php
  *
@@ -42,7 +45,6 @@ namespace XMLSecurity;
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version   1.2.0-dev
  */
-
 class WSSESoapServer
 {
     const WSSENS = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd';
@@ -57,7 +59,7 @@ class WSSESoapServer
     private $secNode = null;
     public $signAllHeaders = false;
 
-    private function locateSecurityHeader($setActor=null)
+    private function locateSecurityHeader($setActor = null)
     {
         $wsNamespace = null;
         if ($this->secNode == null) {
@@ -92,7 +94,7 @@ class WSSESoapServer
         $this->SOAPXPath->registerNamespace('wssoap', $this->soapNS);
         $this->SOAPXPath->registerNamespace('wswsu', self::WSUNS);
         $wsNamespace = $this->locateSecurityHeader();
-        if (! empty($wsNamespace)) {
+        if (!empty($wsNamespace)) {
             $this->SOAPXPath->registerNamespace('wswsse', $wsNamespace);
         }
     }
@@ -109,7 +111,7 @@ class WSSESoapServer
 
         $retVal = $objXMLSecDSig->validateReference();
 
-        if (! $retVal) {
+        if (!$retVal) {
             throw new Exception("Validation Failed");
         }
 
@@ -134,12 +136,12 @@ class WSSESoapServer
                     if ($uri = $encmeth->getAttribute("URI")) {
                         $arUrl = parse_url($uri);
                         if (empty($arUrl['path']) && ($identifier = $arUrl['fragment'])) {
-                            $query = '//wswsse:BinarySecurityToken[@wswsu:Id="'.$identifier.'"]';
+                            $query = '//wswsse:BinarySecurityToken[@wswsu:Id="' . $identifier . '"]';
                             $nodeset = $this->SOAPXPath->query($query);
                             if ($encmeth = $nodeset->item(0)) {
                                 $x509cert = $encmeth->textContent;
                                 $x509cert = str_replace(array("\r", "\n"), "", $x509cert);
-                                $x509cert = "-----BEGIN CERTIFICATE-----\n".chunk_split($x509cert, 64, "\n")."-----END CERTIFICATE-----\n";
+                                $x509cert = "-----BEGIN CERTIFICATE-----\n" . chunk_split($x509cert, 64, "\n") . "-----END CERTIFICATE-----\n";
                                 $objKey->loadKey($x509cert);
                                 break;
                             }
@@ -150,7 +152,7 @@ class WSSESoapServer
             }
         } while (0);
 
-        if (! $objXMLSecDSig->verify($objKey)) {
+        if (!$objXMLSecDSig->verify($objKey)) {
             throw new Exception("Unable to validate Signature");
         }
 

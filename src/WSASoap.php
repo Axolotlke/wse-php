@@ -2,6 +2,8 @@
 
 namespace XMLSecurity;
 
+use DOMXPath;
+
 /**
  * WSASoap.php
  *
@@ -42,7 +44,6 @@ namespace XMLSecurity;
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version   1.2.0-dev
  */
-
 class WSASoap
 {
     const WSANS = 'http://schemas.xmlsoap.org/ws/2004/08/addressing';
@@ -59,8 +60,8 @@ class WSASoap
         if ($this->header == null) {
             $headers = $this->SOAPXPath->query('//wssoap:Envelope/wssoap:Header');
             $header = $headers->item(0);
-            if (! $header) {
-                $header = $this->soapDoc->createElementNS($this->soapNS, $this->soapPFX.':Header');
+            if (!$header) {
+                $header = $this->soapDoc->createElementNS($this->soapNS, $this->soapPFX . ':Header');
                 $this->envelope->insertBefore($header, $this->envelope->firstChild);
             }
             $this->header = $header;
@@ -78,7 +79,7 @@ class WSASoap
         $this->SOAPXPath->registerNamespace('wssoap', $this->soapNS);
         $this->SOAPXPath->registerNamespace('wswsa', self::WSANS);
 
-        $this->envelope->setAttributeNS("http://www.w3.org/2000/xmlns/", 'xmlns:'.self::WSAPFX, self::WSANS);
+        $this->envelope->setAttributeNS("http://www.w3.org/2000/xmlns/", 'xmlns:' . self::WSAPFX, self::WSANS);
         $this->locateHeader();
     }
 
@@ -87,7 +88,7 @@ class WSASoap
         /* Add the WSA Action */
         $header = $this->locateHeader();
 
-        $nodeAction = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX.':Action', $action);
+        $nodeAction = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX . ':Action', $action);
         $header->appendChild($nodeAction);
     }
 
@@ -96,25 +97,25 @@ class WSASoap
         /* Add the WSA To */
         $header = $this->locateHeader();
 
-        $nodeTo = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX.':To', $location);
+        $nodeTo = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX . ':To', $location);
         $header->appendChild($nodeTo);
     }
 
     private function createID()
     {
         $uuid = md5(uniqid(rand(), true));
-        $guid = 'uuid:'.substr($uuid, 0, 8)."-".
-                substr($uuid, 8, 4)."-".
-                substr($uuid, 12, 4)."-".
-                substr($uuid, 16, 4)."-".
-                substr($uuid, 20, 12);
+        $guid = 'uuid:' . substr($uuid, 0, 8) . "-" .
+            substr($uuid, 8, 4) . "-" .
+            substr($uuid, 12, 4) . "-" .
+            substr($uuid, 16, 4) . "-" .
+            substr($uuid, 20, 12);
         return $guid;
     }
 
-    public function addMessageID($id=null)
+    public function addMessageID($id = null)
     {
         /* Add the WSA MessageID or return existing ID */
-        if (! is_null($this->messageID)) {
+        if (!is_null($this->messageID)) {
             return $this->messageID;
         }
 
@@ -124,7 +125,7 @@ class WSASoap
 
         $header = $this->locateHeader();
 
-        $nodeID = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX.':MessageID', $id);
+        $nodeID = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX . ':MessageID', $id);
         $header->appendChild($nodeID);
         $this->messageID = $id;
     }
@@ -138,13 +139,13 @@ class WSASoap
         /* Add the WSA ReplyTo */
         $header = $this->locateHeader();
 
-        $nodeReply = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX.':ReplyTo');
+        $nodeReply = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX . ':ReplyTo');
         $header->appendChild($nodeReply);
 
         if (empty($address)) {
             $address = 'http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous';
         }
-        $nodeAddress = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX.':Address', $address);
+        $nodeAddress = $this->soapDoc->createElementNS(self::WSANS, self::WSAPFX . ':Address', $address);
         $nodeReply->appendChild($nodeAddress);
     }
 

@@ -55,6 +55,7 @@ class XMLSecurityDSig
     const SHA384 = 'http://www.w3.org/2001/04/xmldsig-more#sha384';
     const SHA512 = 'http://www.w3.org/2001/04/xmlenc#sha512';
     const RIPEMD160 = 'http://www.w3.org/2001/04/xmlenc#ripemd160';
+    const GOST_R3411 = 'http://www.w3.org/2001/04/xmldsig-more#gostr3411';
 
     const C14N = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315';
     const C14N_COMMENTS = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments';
@@ -339,6 +340,9 @@ class XMLSecurityDSig
                 break;
             case self::RIPEMD160:
                 $alg = 'ripemd160';
+                break;
+            case self::GOST_R3411:
+                $alg = 'gost-crypto';
                 break;
             default:
                 throw new Exception("Cannot validate digest: Unsupported Algorithm <$digestAlgorithm>");
@@ -671,8 +675,6 @@ class XMLSecurityDSig
 
         $canonicalData = $this->processTransforms($refNode, $node);
         $digValue = $this->calculateDigest($algorithm, $canonicalData);
-
-        throw new Exception($algorithm);
 
         $digestMethod = $this->createNewSignNode('DigestMethod');
         $refNode->appendChild($digestMethod);

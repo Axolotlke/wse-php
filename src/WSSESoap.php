@@ -208,7 +208,6 @@ class WSSESoap
     public function signSoapDoc($objKey, $options = null)
     {
         $objDSig = new XMLSecurityDSig();
-
         $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N_COMMENTS);
 
         $arNodes = array();

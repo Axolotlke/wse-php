@@ -1,8 +1,14 @@
 {
-    "name": "denlapaev/wse-php",
-    "description": "Libraries for adding WS-* support to ext/soap in PHP.",
-    "license": "BSD",
-    "autoload": {
-        "psr-0": { "": "src/" }
+  "name": "denlapaev/wse-php",
+  "description": "Libraries for adding WS-* support to ext/soap in PHP.",
+  "license": "BSD",
+  "autoload": {
+    "psr-4": {
+      "XMLSecurity\\": "src"
     }
+  },
+  "suggest": {
+    "ext/openssl": "OpenSSL extension",
+    "ext/mcrypt": "MCrypt extension"
+  }
 }

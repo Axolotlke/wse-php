@@ -1,5 +1,7 @@
 <?php
 
+namespace XMLSecurity;
+
 /**
  * WSSESoap.php
  *

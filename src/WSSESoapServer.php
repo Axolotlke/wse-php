@@ -1,4 +1,7 @@
 <?php
+
+namespace XMLSecurity;
+
 /**
  * WSSESoapServer.php
  *
@@ -179,7 +182,7 @@ class WSSESoapServer
         $this->secNode = null;
         return true;
     }
-     
+
     public function saveXML()
     {
         return $this->soapDoc->saveXML();

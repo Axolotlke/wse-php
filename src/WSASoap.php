@@ -1,4 +1,7 @@
 <?php
+
+namespace XMLSecurity;
+
 /**
  * WSASoap.php
  *
@@ -50,7 +53,7 @@ class WSASoap
     private $SOAPXPath = null;
     private $header = null;
     private $messageID = null;
-     
+
     private function locateHeader()
     {
         if ($this->header == null) {
@@ -74,7 +77,7 @@ class WSASoap
         $this->SOAPXPath = new DOMXPath($doc);
         $this->SOAPXPath->registerNamespace('wssoap', $this->soapNS);
         $this->SOAPXPath->registerNamespace('wswsa', self::WSANS);
-         
+
         $this->envelope->setAttributeNS("http://www.w3.org/2000/xmlns/", 'xmlns:'.self::WSAPFX, self::WSANS);
         $this->locateHeader();
     }
@@ -149,7 +152,7 @@ class WSASoap
     {
         return $this->soapDoc;
     }
-     
+
     public function saveXML()
     {
         return $this->soapDoc->saveXML();

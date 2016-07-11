@@ -1,5 +1,5 @@
 {
-  "name": "denlapaev/wse-php",
+  "name": "diesonne/wse-php",
   "description": "Libraries for adding WS-* support to ext/soap in PHP.",
   "license": "BSD",
   "autoload": {

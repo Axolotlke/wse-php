@@ -50,10 +50,12 @@ use Exception;
 class WSSESoap
 {
     const WSSENS = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd';
+    const WSSENS11 = 'http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd';
     const WSUNS = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd';
     const WSUNAME = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0';
     const WSSEPFX = 'wsse';
     const WSUPFX = 'wsu';
+    const WSSENS11PFX = 'wsse11';
     public $signAllHeaders = false;
     public $signBody = true;
     private $soapNS, $soapPFX;
@@ -202,6 +204,8 @@ class WSSESoap
             }
 
             $tokenRef = $this->soapDoc->createElementNS(self::WSSENS, self::WSSEPFX . ':SecurityTokenReference');
+            $tokenRef->setAttributeNS(self::WSSENS11,self::WSSENS11PFX.':TokenType','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509PKIPathv1');
+
             $keyInfo->appendChild($tokenRef);
             $reference = $this->soapDoc->createElementNS(self::WSSENS, self::WSSEPFX . ':Reference');
             $reference->setAttribute('ValueType', 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509PKIPathv1');
